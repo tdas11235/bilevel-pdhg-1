@@ -29,8 +29,8 @@ class PDHGSolver(nn.Module):
     def forward(
             self,
             x0: torch.Tensor,
-            y1_0: torch.Tensor,
-            y2_0: torch.Tensor,
+            y1_0: torch.Tensor | None,
+            y2_0: torch.Tensor | None,
             z: torch.Tensor,
     ) -> Tuple[torch.Tensor, Optional[torch.Tensor], Optional[torch.Tensor]]:
         x = x0

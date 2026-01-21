@@ -12,6 +12,7 @@ class GroupProx(BaseProx):
     def __init__(
             self,
             groups: List[torch.Tensor],
+            mu: float,
             tau: float,
             p: float,
             q: float,
@@ -26,6 +27,7 @@ class GroupProx(BaseProx):
         super().__init__()
         self.groups = groups
         self.tau = tau
+        self.mu = mu
         self.p = p
         self.q = q
         self.eps = eps
@@ -49,7 +51,7 @@ class GroupProx(BaseProx):
                 grad = grp_grad(
                     x_g, self.p, self.q, self.eps
                 )
-                x_next = (1.0 - self.eta) * x_g + self.eta * (v_g - self.tau * grad)
+                x_next = (1.0 - self.eta) * x_g + self.eta * (v_g - self.mu * self.tau * grad)
                 if torch.max(torch.abs(x_next - x_g)) < self.tol:
                     x_g = x_next
                     break

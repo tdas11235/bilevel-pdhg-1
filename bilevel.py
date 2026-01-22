@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from typing import Union
 from pdhg import PDHGSolver
 from grp_prox import GroupProx
 
@@ -40,8 +41,8 @@ class Bilevel(nn.Module):
     def step(
             self,
             x0: torch.Tensor,
-            y1_0: torch.Tensor | None,
-            y2_0: torch.Tensor | None,
+            y1_0: Union[torch.Tensor, None],
+            y2_0: Union[torch.Tensor, None],
     ):
         # approximate solve (inner problem)
         x, y1, y2 = self.solver(
@@ -58,6 +59,7 @@ class Bilevel(nn.Module):
         with torch.no_grad():
             self.z -= self.z_lr * self.z.grad
             self.z[:] = torch.max(torch.min(self.z, self.z_u), self.z_l)
+        print(self.z.grad)
         self.z.grad.zero_()
         return f_val.item(), x, y1, y2
     

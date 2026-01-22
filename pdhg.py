@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Union
 from base import BaseConstraintMap, BaseProx
 
 
@@ -29,8 +29,8 @@ class PDHGSolver(nn.Module):
     def forward(
             self,
             x0: torch.Tensor,
-            y1_0: torch.Tensor | None,
-            y2_0: torch.Tensor | None,
+            y1_0: Union[torch.Tensor, None],
+            y2_0: Union[torch.Tensor, None],
             z: torch.Tensor,
     ) -> Tuple[torch.Tensor, Optional[torch.Tensor], Optional[torch.Tensor]]:
         x = x0
